@@ -4,6 +4,7 @@
   "description": "The code of the Glue42 tutorial articles",
   "main": "index.js",
   "scripts": {
+    "start": "live-server --port=9988",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,7 +22,7 @@
     "url": "https://github.com/ErjanGavalji/new-glue42-tutorial-code/issues"
   },
   "homepage": "https://github.com/ErjanGavalji/new-glue42-tutorial-code#readme",
-  "dependencies": {
-    "@glue42/desktop": "^4.5.7"
+  "devDependencies": {
+    "live-server": "^1.2.1"
   }
 }
