@@ -27,20 +27,6 @@ function getRestId(contact) {
   return id;
 }
 
-async function fetchAllContactInfo(contact) {
-  let restId = false;
-  if (contact && Array.isArray(contact.ids) && contact.ids.length > 0) {
-    restId = contact.ids.find((id) => id.systemName === 'rest.id');
-  }
-
-  if (restId) {
-    let response = await fetch(`http://localhost:22060/clients/${restId.nativeId}`);
-    return await response.json();
-  } else {
-    return contact;
-  }
-}
-
 function cloneObject(object) {
   return JSON.parse(JSON.stringify(object));
 }
@@ -80,6 +66,5 @@ export {
   cloneObject,
   getQueryParams,
   getIntialClientId,
-  setButtonAvailability,
-  fetchAllContactInfo
+  setButtonAvailability
 }

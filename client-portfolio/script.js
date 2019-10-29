@@ -1,52 +1,18 @@
 window.applicationName = 'Vanilla Client Portfolio'
-import {onSyncContact, onExcelStatusChange, onOutlookStatusChange, announcePortfolioChange, onPortfolioUpdateAnnounce, setTitle, isUsingChannels} from './glue-related.js'
-import {getRestId, getIntialClientId, setButtonAvailability} from '../shared/utils.js';
-import {sendEmail} from '../shared/send-email.js';
-import {openSheet} from '../shared/open-sheet.js'
+import {getIntialClientId} from '../shared/utils.js';
 
 let displayedContact = undefined;
 let acceptSync = false;
-let sheetSubscription = false;
 
 (async function init() {
   addClickListener();
-  trackOfficeAddins();
 
-  let usingChannels =  await isUsingChannels();
-
-  if (getIntialClientId() && !usingChannels) {
+  if (getIntialClientId()) {
     loadContact(getIntialClientId());
   } else {
     changeSync(true)
   }
-
-  onSyncContact((contact) => {
-    if (acceptSync) {
-      displayContact(contact);
-      displayedContact = contact;
-
-      if (sheetSubscription) {
-        sheetSubscription();
-        sheetSubscription = false;
-      }
-    }
-  });
-
-  onPortfolioUpdateAnnounce(({clientId, portfolio}) => {
-    if (getRestId(displayedContact) === clientId) {
-      displayedContact.context.portfolio = portfolio;
-      displayContact(displayedContact);
-    }
-  })
 }())
-
-function trackOfficeAddins() {
-  let openSheetBtn = document.querySelector('[action="open-sheet"]');
-  let sendEmailBtn = document.querySelector('[action="send-email"]');
-
-  onExcelStatusChange((connected) => setButtonAvailability(openSheetBtn, connected))
-  onOutlookStatusChange((connected) => setButtonAvailability(sendEmailBtn, connected))
-}
 
 function addClickListener() {
   document.addEventListener('click', (event) => {
@@ -102,32 +68,14 @@ function displayContact(contact) {
 
     document.querySelector('table tbody').appendChild(newRow);
   });
-
-  setTitle(contact.displayName)
 }
 
 function emailContact() {
-  sendEmail(displayedContact)
+  console.log('TODO: Send an email');
 }
 
 async function openSheetForContact() {
-  sheetSubscription = await openSheet(displayedContact, (data) => {
-    displayedContact.context.portfolio = data;
-    displayContact(displayedContact);
-    updateContactToServer(displayedContact);
-    announcePortfolioChange(displayedContact, data)
-  });
-}
-
-function updateContactToServer(contact) {
-  let url = `http://localhost:22060/clients/${getRestId(contact)}`;
-  fetch(url,  {
-    method: 'PUT',
-    body: JSON.stringify(contact),
-    headers:{
-      'Content-Type': 'application/json'
-    }
-  }).then(console.log)
+  console.log(`TODO: Open Excel Worksheet with portfolio of ${displayedContact}`);
 }
 
 function changeSync(newValue) {
