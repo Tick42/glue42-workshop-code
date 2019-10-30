@@ -1,10 +1,20 @@
 window.applicationName = 'Vanilla Client Portfolio'
+import { initializeInterop } from './glue-related.js';
 import {getInitialClientId} from '../shared/utils.js';
 
 let displayedContact = undefined;
 let acceptSync = false;
 
+function updatePortfolioHandler(data) {
+  if (data.clientId) {
+    loadContact(data.clientId);
+  }
+}
+
 (async function init() {
+  // Initialize the interop capabilities:
+  await initializeInterop(updatePortfolioHandler);
+
   addClickListener();
   if (getInitialClientId()) {
     // Loaded with a ClientId in the QueryString. Show this contact.
