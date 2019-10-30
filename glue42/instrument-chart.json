@@ -1,0 +1,13 @@
+{
+  "name": "workshop-instrument-chart",
+  "title": "Workshop Instrument Chart",
+  "type": "window",
+  "details": {
+    "url": "http://localhost:4242/instrument-chart",
+    "mode": "tab",
+    "width": 900,
+    "height": 550,
+    "top": 200,
+    "left": 200
+  }
+}

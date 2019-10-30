@@ -1,6 +1,6 @@
 window.applicationName = 'Vanilla Client Portfolio'
-import { initializeInterop } from './glue-related.js';
 import {getInitialClientId} from '../shared/utils.js';
+import { initializeInterop, updateContext } from './glue-related.js';
 
 let displayedContact = undefined;
 let acceptSync = false;
@@ -120,4 +120,8 @@ function clearSelection() {
 function selectTickerRow(row) {
   clearSelection();
   row.classList.add("bg-primary");
+  const ticker = row.getAttribute('ticker');
+  if (ticker) {
+    updateContext(ticker);
+  }
 }
