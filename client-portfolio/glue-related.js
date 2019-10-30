@@ -12,6 +12,14 @@ async function initializeInterop(onUpdatePortfolioHandler) {
   });
 }
 
+async function updateContext(ticker) {
+  // Check if Glue42 was initialized
+  if (window.glue) {
+    window.glue.contexts.update('instrumentDetails', {ticker: ticker});
+  }
+}
+
 export {
-  initializeInterop
+  initializeInterop,
+  updateContext,
 };

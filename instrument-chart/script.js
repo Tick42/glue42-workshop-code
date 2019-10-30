@@ -1,7 +1,9 @@
 window.applicationName = 'Vanilla Client Portfolio';
+import { initializeInterop } from './glue-related.js';
 const defaultInstrument = 'BARC.L';
 
 function displayChart(instrument) {
+  console.log(`INSTRUMENT: ${instrument}`);
   Highcharts.getJSON(
     `./data/${instrument}.json`,
     function(data) {
@@ -40,7 +42,21 @@ function setTitle(instrument) {
   document.querySelector('#title-name').innerText = instrument;
 }
 
+function ensureTickerCompat(ticker) {
+  return ticker.replace(/:LN$/, '.L')
+          .replace(/:US$/, '')
+          .replace(/^GOOGL$/, 'GOOG')
+          .replace(/:GR$/, '.DE');
+}
+
+function displayTickerChart(ticker) {
+  const compatibleTicker = ensureTickerCompat(ticker);
+  console.log(compatibleTicker);
+  displayChart(compatibleTicker);
+}
+
 (async function init() {
   displayChart(defaultInstrument);
   setTitle(defaultInstrument);
+  initializeInterop(displayTickerChart);
 })();
