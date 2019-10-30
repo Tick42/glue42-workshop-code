@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html class="dark">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Client Portfolio</title>
+    <link rel="stylesheet" href="../assets/t42bootstrap.bundle.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/data.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+  </head>
+
+  <body>
+      <header class="navbar-primary container-fluid">
+        <div class="row">
+          <div class="col-6">
+            <h3 class="text-truncate mt-2 mb-1" id="title-name">No instrument selected</h3>
+            <h6>Instrument Chart</h6>
+          </div>
+          <div class="col-6 align-self-center">
+            <div class="d-flex flex-row justify-content-end">
+            </div>
+          </div>
+        </div>
+        </header>
+
+    <div class="container-fluid">
+      <div class="table-responsive mt-3">
+        <div id="container" style="height: 400px; min-width: 310px"></div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/@glue42/desktop/dist/web/@glue42/desktop.min.js"></script>
+    <script src="./script.js" type="module"></script>
+  </body>
+
+</html>
