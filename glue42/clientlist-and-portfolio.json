@@ -1,0 +1,28 @@
+[
+  {
+    "name": "workshop-client-list",
+    "title": "Workshop Client List",
+    "type": "window",
+    "details": {
+      "url": "http://localhost:4242/client-list",
+      "mode": "tab",
+      "width": 500,
+      "height": 400,
+      "top": 200,
+      "left": 200
+    }
+  },
+  {
+    "name": "workshop-client-portfolio",
+    "title": "Workshop Client Portfolio",
+    "type": "window",
+    "details": {
+      "url": "http://localhost:4242/client-portfolio",
+      "mode": "tab",
+      "width": 500,
+      "height": 400,
+      "top": 200,
+      "left": 800
+    }
+  }
+]

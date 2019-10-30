@@ -1,4 +1,5 @@
 import { getPortfolioValue, getRestId } from '../shared/utils.js';
+import {initializeInterop, callShowPortfolio} from './glue-related.js';
 
 (async function init() {
   // Do form initialization:
@@ -7,7 +8,9 @@ import { getPortfolioValue, getRestId } from '../shared/utils.js';
     addSearchFilter();
     addClickListener();
   });
-})()
+
+  await initializeInterop();
+})();
 
 window.dc = displayContacts;
 
@@ -153,7 +156,7 @@ function handleRowClick(event) {
   event.path.forEach(element => {
     if (element.matches && element.matches('tr')) {
       let clientId = element.getAttribute('client-id');
-      console.log(`TODO: Sync Contact By ID ${clientId}`)
+      callShowPortfolio(clientId);
       selectRow(clientId);
     }
   });
