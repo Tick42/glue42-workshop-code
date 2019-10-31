@@ -1,10 +1,13 @@
 import { getPortfolioValue, getRestId } from '../shared/utils.js';
 
-document.addEventListener('DOMContentLoaded', async () => {
-  displayContacts();
-  addSearchFilter();
-  addClickListener();
-})
+(async function init() {
+  // Do form initialization:
+  document.addEventListener('DOMContentLoaded', async () => {
+    displayContacts();
+    addSearchFilter();
+    addClickListener();
+  });
+})()
 
 window.dc = displayContacts;
 
