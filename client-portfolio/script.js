@@ -8,14 +8,21 @@ let acceptSync = false;
   addClickListener();
 
   if (getIntialClientId()) {
+    // Loaded with a ClientId in the QueryString. Show this contact.
     loadContact(getIntialClientId());
   } else {
-    changeSync(true)
+    // No client set by QueryString, enable the "Sync button" to show
+    // we are in interop mode
+    acceptSync = true;
+    toggleSync(acceptSync)
   }
 }())
 
 function addClickListener() {
+  // Only add a single handler for the click event to the entire document
+  //   to reduce the load to the DOM
   document.addEventListener('click', (event) => {
+    // Detect if the element has the attribute of "action"
     if (event.target.matches('[action], [action] *')) {
       let button = event.path.reduce((acc, cur) => {
         return cur.matches && cur.matches('[action]') ? cur : acc;
@@ -29,8 +36,9 @@ function addClickListener() {
       switch(action) {
         case 'send-email': emailContact(); break;
         case 'open-sheet': openSheetForContact(); break;
-        case 'sync-on': changeSync(true); break;
-        case 'sync-off': changeSync(false); break;
+        case 'sync-on': toggleSync(true); break;
+        case 'sync-off': toggleSync(false); break;
+        case 'select-ticker-row': selectTickerRow(event.target.parentNode); break;
       }
     }
   })
@@ -43,11 +51,11 @@ async function loadContact(contactId) {
     return;
   }
 
-  displayContact(contact);
+  displayContactPortfolio(contact);
   displayedContact = contact;
 }
 
-function displayContact(contact) {
+function displayContactPortfolio(contact) {
   clearTable();
   if (!contact) {
     return;
@@ -55,18 +63,23 @@ function displayContact(contact) {
 
   document.querySelector('#title-name').innerHTML = contact.displayName;
 
-  let emptyRow = document.querySelector('.empty-row').cloneNode(true);
-  emptyRow.style.display = '';
-  emptyRow.classList.remove('empty-row')
+  // Use the empty row as a template:
+  let templateRow = document.querySelector('.empty-row').cloneNode(true);
+  templateRow.style.display = '';
+  templateRow.classList.remove('empty-row');
+
+  const tbodyElement = document.querySelector('table tbody'); 
 
   contact.context.portfolio.forEach(instrument => {
-    let newRow = emptyRow.cloneNode(true);
+    let newRow = templateRow.cloneNode(true);
     newRow.querySelector('.instrument-ric').innerText = instrument.ric;
     newRow.querySelector('.instrument-name').innerText = instrument.description;
     newRow.querySelector('.instrument-price').innerText = instrument.price;
     newRow.querySelector('.instrument-number').innerText = instrument.shares;
+    newRow.setAttribute('ticker', instrument.ric);
+    newRow.setAttribute('action', 'select-ticker-row');
 
-    document.querySelector('table tbody').appendChild(newRow);
+    tbodyElement.appendChild(newRow);
   });
 }
 
@@ -78,7 +91,7 @@ async function openSheetForContact() {
   console.log(`TODO: Open Excel Worksheet with portfolio of ${displayedContact}`);
 }
 
-function changeSync(newValue) {
+function toggleSync(newValue) {
   acceptSync = newValue;
 
   document.querySelector(`[action="sync-${newValue ? 'on' : 'off'}"]`).classList.add('hidden');
@@ -89,4 +102,13 @@ function clearTable() {
   document.querySelectorAll('tbody tr:not(.empty-row)').forEach(row => {
     row.remove();
   })
+}
+
+function clearSelection() {
+  document.querySelectorAll(`.contacts-table tbody tr.bg-primary`).forEach(el => el.classList.remove('bg-primary'))
+}
+
+function selectTickerRow(row) {
+  clearSelection();
+  row.classList.add("bg-primary");
 }

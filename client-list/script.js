@@ -12,16 +12,18 @@ async function displayContacts() {
   let contacts = (window.contacts || await getContacts());
   window.contacts = contacts;
 
-  let emptyRow = document.querySelector('.empty-row').cloneNode(true);
-  emptyRow.style.display = '';
-  emptyRow.classList.remove('empty-row');
+  // Use the hidden empty row as a template:
+  let templateRow = document.querySelector('.empty-row').cloneNode(true);
+  templateRow.style.display = '';
+  templateRow.classList.remove('empty-row');
 
+  // Clear rows
   document.querySelectorAll('.contacts-table tbody tr:not(.empty-row)').forEach(n => n.remove());
 
   contacts.forEach(contact => {
     // clone the empty "template" row, fill current contact details and add it to the table
     const {displayName, emails, context:{portfolio}, _id} = contact;
-    const newRow = emptyRow.cloneNode(true);
+    const newRow = templateRow.cloneNode(true);
     let portfolioValue = getPortfolioValue(portfolio);
 
     newRow.querySelector('.client-name').innerText = displayName;
@@ -56,7 +58,7 @@ function addSearchFilter() {
 }
 
 function selectRow(restId) {
-  document.querySelectorAll(`.contacts-table tbody tr[client-id].bg-primary`).forEach(el => el.classList.remove('bg-primary'))
+  clearRowSelection();
 
   let selectedContactRow = document.querySelector(`.contacts-table tbody tr[client-id="${restId}"]`);
   if (selectedContactRow) {
@@ -64,7 +66,7 @@ function selectRow(restId) {
   }
 }
 
-function clearRowsSelection() {
+function clearRowSelection() {
   document.querySelectorAll('.contacts-table tbody tr.bg-primary').forEach(node => {
     node.classList.remove('bg-primary');
   });
