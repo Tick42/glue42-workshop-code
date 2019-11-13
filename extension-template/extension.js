@@ -1,3 +1,10 @@
+const exchangesMap = {
+  XLON: "LN",
+  XNAS: "US",
+  XNYS: "US",
+  XETR: "GR"
+};
+
 history.pushState = ((f) => function pushState() {
   const ret = f.apply(this, arguments);
   window.dispatchEvent(new Event('pushState'));
@@ -52,5 +59,28 @@ function drawButton(button) {
 
 function onGlueButtonClicked(e) {
   e.preventDefault();
-  console.log("The button was clicked!");
+
+  loadApp();
+  updateContext();
+}
+
+function updateContext() {
+  const [exchangeMS, instrument] = window.location.href
+    .replace("https://www.morningstar.com/stocks/", "")
+    .replace("/quote", "")
+    .toLocaleUpperCase()
+    .split("/");
+
+  const exchange = exchangesMap[exchangeMS];
+
+  return injectedGlue.contexts.update("instrumentDetails", {
+    ticker: `${instrument}:${exchange}`
+  });
+}
+
+function loadApp() {
+  const app = injectedGlue.appManager.application("instrument-chart-no-channels");
+  if (app && app.instances.length === 0) {
+    app.start();
+  }
 }
