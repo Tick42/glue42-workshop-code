@@ -115,10 +115,13 @@ function setButtonState(buttons, status) {
     setButtonAvailability(button, status);
   })
 }
+function excelStatusChangeHandler(newStatus) {
+  setButtonState(document.querySelectorAll('[action="sync-to-excel"]'), newStatus);
+};
 
 (async function init() {
   // Initialize the interop capabilities:
-  await initializeInterop(updatePortfolioHandler);
+  await initializeInterop(updatePortfolioHandler, excelStatusChangeHandler);
 
   addClickListener();
 
