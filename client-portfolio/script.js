@@ -1,31 +1,9 @@
 window.applicationName = 'Vanilla Client Portfolio'
-import {getInitialClientId} from '../shared/utils.js';
+import {getInitialClientId, setButtonAvailability} from '../shared/utils.js';
 import { initializeInterop, updateContext } from './glue-related.js';
 
 let displayedContact = undefined;
 let acceptSync = false;
-
-function updatePortfolioHandler(data) {
-  if (data.clientId) {
-    loadContact(data.clientId);
-  }
-}
-
-(async function init() {
-  // Initialize the interop capabilities:
-  await initializeInterop(updatePortfolioHandler);
-
-  addClickListener();
-  if (getInitialClientId()) {
-    // Loaded with a ClientId in the QueryString. Show this contact.
-    loadContact(getInitialClientId());
-  } else {
-    // No client set by QueryString, enable the "Sync button" to show
-    // we are in interop mode
-    acceptSync = true;
-    toggleSync(acceptSync)
-  }
-}())
 
 function addClickListener() {
   // Only add a single handler for the click event to the entire document
@@ -51,6 +29,12 @@ function addClickListener() {
       }
     }
   })
+}
+
+function updatePortfolioHandler(data) {
+  if (data.clientId) {
+    loadContact(data.clientId);
+  }
 }
 
 async function loadContact(contactId) {
@@ -125,3 +109,26 @@ function selectTickerRow(row) {
     updateContext(ticker);
   }
 }
+
+function setButtonState(buttons, status) {
+  buttons.forEach(button => {
+    setButtonAvailability(button, status);
+  })
+}
+
+(async function init() {
+  // Initialize the interop capabilities:
+  await initializeInterop(updatePortfolioHandler);
+
+  addClickListener();
+
+  if (getInitialClientId()) {
+    // Loaded with a ClientId in the QueryString. Show this contact.
+    loadContact(getInitialClientId());
+  } else {
+    // No client set by QueryString, enable the "Sync button" to show
+    // we are in interop mode
+    acceptSync = true;
+    toggleSync(acceptSync)
+  }
+}())
