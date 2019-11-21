@@ -1,15 +1,14 @@
 window.applicationName = 'Vanilla Client Portfolio'
-import {getIntialClientId} from '../shared/utils.js';
+import {getInitialClientId} from '../shared/utils.js';
 
 let displayedContact = undefined;
 let acceptSync = false;
 
 (async function init() {
   addClickListener();
-
-  if (getIntialClientId()) {
+  if (getInitialClientId()) {
     // Loaded with a ClientId in the QueryString. Show this contact.
-    loadContact(getIntialClientId());
+    loadContact(getInitialClientId());
   } else {
     // No client set by QueryString, enable the "Sync button" to show
     // we are in interop mode

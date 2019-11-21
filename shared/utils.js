@@ -31,11 +31,13 @@ function cloneObject(object) {
   return JSON.parse(JSON.stringify(object));
 }
 
-function getIntialClientId() {
-  let queryParmsClientId = getQueryParams()['clientId'];
-  let contextClientId = window.glue42gd && glue42gd.context.clientId;
-
-  return queryParmsClientId || contextClientId;
+function getInitialClientId() {
+  let queryParamsClientId = getQueryParams()['clientId'];
+  let contextClientId  = null;
+  if (window.glue42gd && window.glue42gd.context) {
+    contextClientId = window.glue42gd.context.clientId;
+  }
+  return queryParamsClientId || contextClientId;
 }
 
 function getQueryParams() {
@@ -65,6 +67,6 @@ export {
   getRestId,
   cloneObject,
   getQueryParams,
-  getIntialClientId,
+  getInitialClientId,
   setButtonAvailability
 }
