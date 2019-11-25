@@ -2,6 +2,7 @@ window.applicationName = 'Vanilla Client Portfolio'
 import {getInitialClientId, setButtonAvailability} from '../shared/utils.js';
 import { initializeInterop, updateContext } from './glue-related.js';
 import { openSheet } from './excel-related.js';
+import { sendEmail } from './outlook-related.js';
 
 let displayedContact = undefined;
 let acceptSync = false;
@@ -77,8 +78,8 @@ function displayContactPortfolio(contact) {
   });
 }
 
-function emailContact() {
-  console.log('TODO: Send an email');
+async function emailContact() {
+  await sendEmail(displayedContact);
 }
 
 async function syncPortfolioToExcel() {
@@ -126,9 +127,14 @@ function excelStatusChangeHandler(newStatus) {
   setButtonState(document.querySelectorAll('[action="sync-to-excel"]'), newStatus);
 }
 
+function outlookStatusChangeHandler({connected} ) {
+  console.log(`newStatus: ${connected}`);
+  setButtonState(document.querySelectorAll('[action="send-email"]'), connected);
+};
+
 (async function init() {
   // Initialize the interop capabilities:
-  await initializeInterop(updatePortfolioHandler, excelStatusChangeHandler);
+  await initializeInterop(updatePortfolioHandler, excelStatusChangeHandler, outlookStatusChangeHandler);
 
   addClickListener();
 

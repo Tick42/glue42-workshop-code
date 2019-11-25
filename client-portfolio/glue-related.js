@@ -1,4 +1,4 @@
-async function initializeInterop(onUpdatePortfolioHandler, excelStatusChangeHandler) {
+async function initializeInterop(onUpdatePortfolioHandler, excelStatusChangeHandler, outlookStatusChangeHandler) {
   const glue = await Glue();
   // From a debugging perspective, it is a good practice to add a reference
   //   to the Glue42 object globally
@@ -18,6 +18,8 @@ async function initializeInterop(onUpdatePortfolioHandler, excelStatusChangeHand
   const g4o = await Glue4Office(g4OConfig);
   window.g4o = g4o;
   g4o.excel.onAddinStatusChanged(excelStatusChangeHandler);
+
+  g4o.outlook.onAddinStatusChanged(outlookStatusChangeHandler);
 }
 
 async function updateContext(ticker) {
