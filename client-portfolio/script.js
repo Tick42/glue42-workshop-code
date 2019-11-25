@@ -1,6 +1,7 @@
 window.applicationName = 'Vanilla Client Portfolio'
 import {getInitialClientId, setButtonAvailability} from '../shared/utils.js';
 import { initializeInterop, updateContext } from './glue-related.js';
+import { openSheet } from './excel-related.js';
 
 let displayedContact = undefined;
 let acceptSync = false;
@@ -22,7 +23,7 @@ function addClickListener() {
       let action = button.getAttribute('action');
       switch(action) {
         case 'send-email': emailContact(); break;
-        case 'open-sheet': openSheetForContact(); break;
+        case 'sync-to-excel': syncPortfolioToExcel(); break;
         case 'sync-on': toggleSync(true); break;
         case 'sync-off': toggleSync(false); break;
         case 'select-ticker-row': selectTickerRow(event.target.parentNode); break;
@@ -80,8 +81,13 @@ function emailContact() {
   console.log('TODO: Send an email');
 }
 
-async function openSheetForContact() {
-  console.log(`TODO: Open Excel Worksheet with portfolio of ${displayedContact}`);
+async function syncPortfolioToExcel() {
+  const onExcelUpdate = (data) => {
+    displayedContact.context.portfolio = data;
+    displayContactPortfolio(displayedContact);
+  }
+
+  await openSheet(displayedContact, onExcelUpdate);
 }
 
 function toggleSync(newValue) {
