@@ -1,9 +1,8 @@
 async function initializeInterop() {
-  await Glue().then(glue => {
+  const glue = await Glue();
     // From a debugging perspective, it is a good practice to add a reference
     //   to the Glue42 object globally
-    window.glue = glue;
-  });
+  window.glue = glue;
 }
 
 async function callShowPortfolio(clientId) {
