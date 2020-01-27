@@ -8,7 +8,7 @@ async function initializeInterop() {
 async function callShowPortfolio(clientId) {
   // Call the BigBank.ShowPortfolio method, registered in the Glue42
   //   environment
-  glue.interop.invoke("BigBank.ShowPortfolio", {clientId});
+  window.glue.interop.invoke("BigBank.ShowPortfolio", {clientId});
 }
 
 export {
