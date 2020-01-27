@@ -3,12 +3,12 @@
     <title>Glue42 Tutorial Code</title>
     <script src="https://cdn.glue42.com/desktop@4.6.3/dist/web/@glue42/desktop.min.js"></script>
     <script>
-      Glue()
-        .then(glueInstance => {
-          window.glue = glueInstance;
-          console.log('The Glue42 object was successfully initialized');
-          // Do additional initialization of the Glue42 object
-        })
+      (async function() {
+      glueInstance = await Glue();
+      window.glue = glueInstance;
+      console.log('The Glue42 object was successfully initialized');
+      // Do additional initialization of the Glue42 object
+      })();
     </script>
   </head>
   <body>
